@@ -25,6 +25,7 @@ class Server(Tk):
     def start_server(self):
         host = ''  # Empty string represents your computer's default IP address
         port = 12345  # Choose a suitable port number
+        print(host)
 
         # Create a socket object
         self.server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)

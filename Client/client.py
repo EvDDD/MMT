@@ -1,11 +1,14 @@
 import tkinter as tk
+import socket
 from process import *
 from pic import *
 from listApp import *
 from keylog import *
 from connect_server import *
 
-
+def getIP(self):
+    ip = self.txtIP.get()
+    return ip
 
 class ClientForm(tk.Tk):
     def __init__(self):
@@ -46,34 +49,47 @@ class ClientForm(tk.Tk):
 
     def butApp_click(self):
         # Event handler for the "App Running" button
+        if socket.error:
+            messagebox.showinfo("Error", "Lỗi kết nối đến server")
+            return
         open_app_window(self)
-        pass
 
     def butConnect_click(self):
-        connect_to_server()
+        ip = getIP(self)
+        connect_to_server(ip)
 
     def butTat_click(self):
         # Event handler for the "Tắt máy" button
-        pass
+        if socket.error:
+            messagebox.showinfo("Error", "Lỗi kết nối đến server")
+            return
 
     def butExit_click(self):
         # Event handler for the "Thoát" button
         # cái nút này vậy là xong rồi, nó chỉ là nút tắt chương trình
         self.destroy()
-        pass
 
     def butPic_click(self):
         # Event handler for the "Chụp màn hình" button
+        if socket.error:
+            messagebox.showinfo("Error", "Lỗi kết nối đến server")
+            return
         open_pic_window(self)
         
 
     def butKeyLock_click(self):
         # Event handler for the "Keystroke" button
+        if socket.error:
+            messagebox.showinfo("Error", "Lỗi kết nối đến server")
+            return
         open_keylog_window(self)
         pass
 
     def butProcess_click(self):
         # Event handler for the "Process Running" button
+        if socket.error:
+            messagebox.showinfo("Error", "Lỗi kết nối đến server")
+            return
         open_process_window(self)
 
 if __name__ == "__main__":

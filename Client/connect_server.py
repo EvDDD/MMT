@@ -1,7 +1,8 @@
 import socket
+from tkinter import messagebox
 
-def connect_to_server():
-    host = 'localhost'  # Replace with the server's IP address
+def connect_to_server(ip):
+    host = ip  # Replace with the server's IP address
     port = 12345  # Replace with the server's port number
 
     # Create a socket object
@@ -10,12 +11,12 @@ def connect_to_server():
     try:
         # Connect to the server
         client_socket.connect((host, port))
-        print("Connected to server")
+        messagebox.showinfo("Notification", "Kết nối đến server thành công")
 
         # Add your client logic here to send/receive data
 
     except socket.error as e:
-        print(f"Connection error: {str(e)}")
+        messagebox.showinfo("Error", "Lỗi kết nối đến server")
 
     finally:
         # Close the client socket

@@ -64,7 +64,8 @@ class ClientForm(tk.Tk):
     def butExit_click(self):    
         # Event handler for the "Thoát" button
         # cái nút này vậy là xong rồi, nó chỉ là nút tắt chương trình
-        globals.client_socket.close()
+        if globals.client_socket:
+            globals.client_socket.close()
         self.destroy()
 
     def butPic_click(self):

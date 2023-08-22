@@ -3,6 +3,7 @@ from client import *
 from kill import * 
 from start import *
 from tkinter import ttk
+from connect_server import *
 
 def kill_process(window): #code o day
     open_kill(window)

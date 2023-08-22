@@ -46,6 +46,8 @@ class Server(Tk):
                 print(f"Connected with client: {address}")
 
                 # Add your server logic here to handle client requests
+                data = client_socket.recv(1024).decode()
+                print(f"Received data: {data}")
 
         except socket.error as e:
             print(f"Error occurred: {str(e)}")

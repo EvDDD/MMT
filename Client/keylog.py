@@ -1,5 +1,6 @@
 import tkinter as tk
 from client import *
+from connect_server import *
 
 def hook(window):
     #Implement hook logic

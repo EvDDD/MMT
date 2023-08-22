@@ -2,12 +2,14 @@ import tkinter as tk
 from tkinter import messagebox
 from tkinter import filedialog
 from client import *
+import socket
+from connect_server import *
 
 def open_pic_window(self):
     window = tk.Toplevel(self)
     window.title("Pic")
 
-    window.picture = tk.PhotoImage() #cái này là nó tạo sẵn thôi, đừng quan tâm
+    window.picture = tk.PhotoImage()
     window.butTake = tk.Button(window, text="Chụp", command=lambda:butTake_Click(window))
     window.button1 = tk.Button(window, text="Lưu", command=lambda:button1_Click(window))
 
@@ -18,8 +20,8 @@ def open_pic_window(self):
     window.button1.pack(side=tk.LEFT)
 
 def butTake_Click(window):
-    # Add your code for capturing an image here
-    pass
+    message = "Hello, server!"
+    globals.client_socket.send(message.encode())
 
 def button1_Click(window):
     # Add your code for saving the image here

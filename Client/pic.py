@@ -4,6 +4,10 @@ from tkinter import filedialog
 from client import *
 import socket
 from connect_server import *
+import pickle
+from PIL import Image
+
+screenshot = None
 
 def open_pic_window(self):
     window = tk.Toplevel(self)
@@ -20,11 +24,21 @@ def open_pic_window(self):
     window.button1.pack(side=tk.LEFT)
 
 def butTake_Click(window):
-    message = "Hello, server!"
+    message = "pic"
     globals.client_socket.send(message.encode())
+    screenshot_data = b''
+
+    data = globals.client_socket.recv(8388608)
+    screenshot_data += data
+
+    # Deserialize the screenshot object
+    global screenshot
+    screenshot = pickle.loads(screenshot_data)
+    
 
 def button1_Click(window):
     # Add your code for saving the image here
     file_path = filedialog.asksaveasfilename(defaultextension=".png", filetypes=[("PNG Files", "*.png")])
-    if file_path:
-        messagebox.showinfo("Lưu", f"Lưu ảnh vào: {file_path}")
+    # if file_path:
+    #     messagebox.showinfo("Lưu", f"Lưu ảnh vào: {file_path}")
+    screenshot.save(file_path)

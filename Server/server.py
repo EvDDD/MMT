@@ -1,6 +1,8 @@
 from tkinter import *
 import threading
 import socket
+import pyautogui
+import pickle
 
 class Server(Tk):
     def __init__(self):
@@ -46,8 +48,17 @@ class Server(Tk):
                 print(f"Connected with client: {address}")
 
                 # Add your server logic here to handle client requests
-                data = client_socket.recv(1024).decode()
-                print(f"Received data: {data}")
+                while True:
+                    data = client_socket.recv(1024).decode()
+                    print(f"Received data: {data}")
+
+                    if data == "pic":
+                        # Capture a screenshot
+                        screenshot = pyautogui.screenshot()
+                        # Serialize the screenshot object
+                        screenshot_data = pickle.dumps(screenshot)
+                        # Send the serialized screenshot to the client
+                        client_socket.sendall(screenshot_data)
 
         except socket.error as e:
             print(f"Error occurred: {str(e)}")

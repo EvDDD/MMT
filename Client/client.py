@@ -49,6 +49,9 @@ class ClientForm(tk.Tk):
 
     def butApp_click(self):
         # Event handler for the "App Running" button
+        if globals.client_socket is None:
+            messagebox.showinfo("Error", "Lỗi kết nối đến server")
+            return
         open_app_window(self)
 
     def butConnect_click(self):
@@ -59,7 +62,9 @@ class ClientForm(tk.Tk):
 
     def butTat_click(self):
         # Event handler for the "Tắt máy" button
-        pass
+        if globals.client_socket is None:
+            messagebox.showinfo("Error", "Lỗi kết nối đến server")
+            return
 
     def butExit_click(self):    
         # Event handler for the "Thoát" button
@@ -70,15 +75,24 @@ class ClientForm(tk.Tk):
 
     def butPic_click(self):
         # Event handler for the "Chụp màn hình" button
+        if globals.client_socket is None:
+            messagebox.showinfo("Error", "Lỗi kết nối đến server")
+            return
         open_pic_window(self)
         
 
     def butKeyLock_click(self):
         # Event handler for the "Keystroke" button
+        if globals.client_socket is None:
+            messagebox.showinfo("Error", "Lỗi kết nối đến server")
+            return
         open_keylog_window(self)
 
     def butProcess_click(self):
         # Event handler for the "Process Running" button
+        if globals.client_socket is None:
+            messagebox.showinfo("Error", "Lỗi kết nối đến server")
+            return
         open_process_window(self)
 
 if __name__ == "__main__":

@@ -3,6 +3,8 @@ import threading
 import socket
 import pyautogui
 import pickle
+import psutil
+import json
 
 class Server(Tk):
     def __init__(self):
@@ -15,7 +17,7 @@ class Server(Tk):
         self.title("Server")
         self.geometry("124x88")
         self.button1 = Button(self)
-        self.button1.place(x=21, y=12, width=75, height=64)
+        self.button1.place(x=24, y=12, width=100, height=64)
         self.button1.config(text="Mở server", command=self.button1_Click)
 
     def button1_Click(self):
@@ -59,6 +61,23 @@ class Server(Tk):
                         screenshot_data = pickle.dumps(screenshot)
                         # Send the serialized screenshot to the client
                         client_socket.sendall(screenshot_data)
+                    
+                    if data == "pro":
+                        # Get the list of running processes
+                        process_list = []
+                        for process in psutil.process_iter(['pid', 'name', 'num_threads']):
+                            process_info = {
+                                'pid': process.info['pid'],
+                                'name': process.info['name'],
+                                'num_threads': process.info['num_threads']
+                            }
+                            process_list.append(process_info)
+
+                        # Convert the list of processes to JSON
+                        process_json = json.dumps(process_list)
+
+                        # Send the JSON string to the client
+                        client_socket.send(process_json.encode())
 
         except socket.error as e:
             print(f"Error occurred: {str(e)}")

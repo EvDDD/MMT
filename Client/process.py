@@ -39,7 +39,6 @@ def start_process(window):
 def xoa_process(window):
     window.listView1.delete(*window.listView1.get_children())
 
-
 def open_process_window(self):
     window = tk.Toplevel(self)
 

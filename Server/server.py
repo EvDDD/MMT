@@ -5,6 +5,9 @@ import pyautogui
 import pickle
 import psutil
 import json
+import subprocess
+import os
+import signal
 
 class Server(Tk):
     def __init__(self):
@@ -52,7 +55,7 @@ class Server(Tk):
                 # Add your server logic here to handle client requests
                 while True:
                     data = client_socket.recv(1024).decode()
-                    print(f"Received data: {data}")
+                    #print(f"Received data: {data}")
 
                     if data == "pic":
                         # Capture a screenshot
@@ -78,6 +81,22 @@ class Server(Tk):
 
                         # Send the JSON string to the client
                         client_socket.send(process_json.encode())
+                    
+                    if data == "start":
+                        msg = client_socket.recv(1024).decode()
+                        msg += ".exe"
+                        subprocess.Popen(msg)
+                        mess = "OK"
+                        client_socket.send(mess.encode())
+                    
+                    if data == "kill":
+                        msg = client_socket.recv(1024).decode()
+                        id = int(msg)
+                        os.kill(id, signal.SIGTERM)
+                        mess = "OK"
+                        client_socket.send(mess.encode())
+
+
 
         except socket.error as e:
             print(f"Error occurred: {str(e)}")

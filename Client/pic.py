@@ -12,16 +12,13 @@ screenshot = None
 def open_pic_window(self):
     window = tk.Toplevel(self)
     window.title("Pic")
+    window.geometry("140x74")
 
-    window.picture = tk.PhotoImage()
     window.butTake = tk.Button(window, text="Chụp", command=lambda:butTake_Click(window))
+    window.butTake.place(x=12, y=12, width=50, height=50)
+
     window.button1 = tk.Button(window, text="Lưu", command=lambda:button1_Click(window))
-
-    window.picture_label = tk.Label(window, image=window.picture)
-    window.picture_label.pack()
-
-    window.butTake.pack(side=tk.LEFT)
-    window.button1.pack(side=tk.LEFT)
+    window.button1.place(x=80, y=12, width=50, height=50)
 
 def butTake_Click(window):
     message = "pic"

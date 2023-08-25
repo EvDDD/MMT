@@ -65,6 +65,8 @@ class ClientForm(tk.Tk):
         if globals.client_socket is None:
             messagebox.showinfo("Error", "Lỗi kết nối đến server")
             return
+        message = "shut"
+        globals.client_socket.send(message.encode())
 
     def butExit_click(self):    
         # Event handler for the "Thoát" button

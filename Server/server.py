@@ -1,4 +1,5 @@
 from tkinter import *
+from tkinter import messagebox
 import threading
 import socket
 import pyautogui
@@ -81,6 +82,27 @@ class Server(Tk):
 
                         # Send the JSON string to the client
                         client_socket.send(process_json.encode())
+
+                    if data == "app":
+                        # Get the list of running processes
+                        process_list = []
+                        for process in psutil.process_iter(['pid', 'name', 'num_threads']):
+                            try:
+                                if process.info['name'].lower().endswith('.exe'):
+                                    process_info = {
+                                        'pid': process.info['pid'],
+                                        'name': process.info['name'],
+                                        'num_threads': process.info['num_threads']
+                                    }
+                                    process_list.append(process_info)
+                            except (psutil.NoSuchProcess, psutil.AccessDenied, psutil.ZombieProcess):
+                                pass
+
+                        # Convert the list of processes to JSON
+                        process_json = json.dumps(process_list)
+
+                        # Send the JSON string to the client
+                        client_socket.send(process_json.encode())
                     
                     if data == "start":
                         msg = client_socket.recv(1024).decode()
@@ -95,6 +117,10 @@ class Server(Tk):
                         os.kill(id, signal.SIGTERM)
                         mess = "OK"
                         client_socket.send(mess.encode())
+                    
+                    if data == "shut":
+                        messagebox.showinfo("", "The computer will shutdown after 5s")
+                        os.system("shutdown /s /t 5")
 
 
 

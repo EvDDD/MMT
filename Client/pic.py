@@ -25,7 +25,7 @@ def butTake_Click(window):
     globals.client_socket.send(message.encode())
     screenshot_data = b''
 
-    data = globals.client_socket.recv(8388608)
+    data = globals.client_socket.recv(33554432)
     screenshot_data += data
 
     # Deserialize the screenshot object

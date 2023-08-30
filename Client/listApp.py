@@ -27,10 +27,7 @@ def xem_app(window):
     process_list = json.loads(received_data)
 
     for process in process_list:
-        pid = process['pid']
-        name = process['name']
-        num_threads = process['num_threads']
-        
+        name, pid, num_threads = process.split('|')
         window.listView1.insert('', tk.END, values=(name, pid, num_threads))
 
 def start_app(window):

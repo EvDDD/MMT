@@ -107,21 +107,21 @@ class Server(Tk):
 
                     if data == "app":
                         # Get the list of running processes
-                        process_list = []
-                        for process in psutil.process_iter(['pid', 'name', 'num_threads']):
-                            try:
-                                if process.info['name'].lower().endswith('.exe'):
-                                    process_info = {
-                                        'pid': process.info['pid'],
-                                        'name': process.info['name'],
-                                        'num_threads': process.info['num_threads']
-                                    }
-                                    process_list.append(process_info)
-                            except (psutil.NoSuchProcess, psutil.AccessDenied, psutil.ZombieProcess):
-                                pass
+
+                        appList = []
+                        cmd = 'powershell "gps | where {$_.MainWindowTitle } | select ProcessName,Id"'
+                        proc = subprocess.Popen(cmd, shell=True, stdout=subprocess.PIPE)
+                        for line in proc.stdout:
+                            parts = line.decode().split()
+                            if len(parts) >= 2 and parts[1].isdigit():
+                                processName = parts[0]
+                                processId = int(parts[1])
+                                process = psutil.Process(processId)
+                                numThreads = process.num_threads()
+                                appList.append(f"{processName}|{processId}|{numThreads}")
 
                         # Convert the list of processes to JSON
-                        process_json = json.dumps(process_list)
+                        process_json = json.dumps(appList)
 
                         # Send the JSON string to the client
                         client_socket.send(process_json.encode())
